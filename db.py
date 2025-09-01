@@ -7,14 +7,7 @@ import psycopg2
 from dotenv import load_dotenv
 
 load_dotenv()
-
 logger = logging.getLogger(__name__)
-logging.basicConfig(
-    filename="./bd.log",
-    format="%(asctime)s - %(levelname)s: %(message)s",
-    encoding="utf-8",
-    level=logging.WARNING,
-)
 
 
 class Database:

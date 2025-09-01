@@ -6,11 +6,17 @@ from datetime import datetime
 from db import Database
 import logging
 
+print(f"Diretório atual: {os.getcwd()}")
 
-# Credenciais (iguais para todos os roteadores, se necessário personalize)
+# Configure o logging no início do seu script
+logging.basicConfig(level=logging.INFO,
+                    filename='monitor_rede.log',  # Nome de arquivo descritivo
+                    filemode='a',                  # Mantém o histórico de logs
+                    encoding="utf-8",
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s') # Formato um pouco mais limpo
+
+# É comum criar o logger depois da configuração básica
 logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, filename='./app.log', filemode='w', encoding="utf-8",
-                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 logger.info('Coletando dados dos roteadores!'"")
 db = Database()
@@ -20,13 +26,13 @@ logger.info("Script Inicializado")
 def registrar_status(ponto, ip, status, uptime=""):
     retorno = db.registrar_uptime({"data_registro":datetime.now().isoformat(),"ponto": ponto, "ip": ip, "status": status, "uptime": uptime})
     if retorno:
-        print("Registrado com sucesso!")
+        print(f"Ponto: {ponto} - IP: {ip} Registrado com sucesso!")
 
 for ponto, ip in roteadores:
     device = {
         'device_type': 'mikrotik_routeros',
         'host': ip,
-        'username': os.getenv("USERNAME"),
+        'username': os.getenv("MKT_USERNAME"),
         'password': os.getenv("PASSWORD"),
         'port': 45162,
         'global_delay_factor': 2,
