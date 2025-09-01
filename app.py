@@ -1,3 +1,5 @@
+import os
+
 from netmiko import ConnectHandler
 from netmiko import NetMikoTimeoutException, NetMikoAuthenticationException
 from datetime import datetime
@@ -6,9 +8,6 @@ import logging
 
 
 # Credenciais (iguais para todos os roteadores, se necessário personalize)
-username = 'admin'
-password = 'perkons6340'
-
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, filename='./app.log', filemode='w', encoding="utf-8",
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -27,8 +26,8 @@ for ponto, ip in roteadores:
     device = {
         'device_type': 'mikrotik_routeros',
         'host': ip,
-        'username': username,
-        'password': password,
+        'username': os.getenv("USERNAME"),
+        'password': os.getenv("PASSWORD"),
         'port': 45162,
         'global_delay_factor': 2,
     }
